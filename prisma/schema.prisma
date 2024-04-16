@@ -6,3 +6,23 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Endereco {
+  id Int @id @default(autoincrement())
+  longitude Float
+  latitude Float
+  numero Int?
+  rua String?
+  rotasOrigem Rota[] @relation("Origem")
+  rotasDestino Rota[]   @relation("Destino")
+}
+
+model Rota {
+  id Int @id @default(autoincrement())
+  origem Endereco @relation("Origem", fields: [origemId], references: [id])
+  origemId Int
+  destino Endereco @relation("Destino", fields: [destinoId], references: [id])
+  destinoId Int
+  distancia Float
+  tempo Float
+}
